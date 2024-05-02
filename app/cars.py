@@ -24,5 +24,5 @@ class Car(pygame.sprite.Sprite):
     def update(self, dt):
         self.pos += self.direction * self.speed * dt
         self.rect.center = (round(self.pos.x), round(self.pos.y))
-        if not -200 < self.rect.x < 3400:
+        if not -300 < self.rect.x < 3400:
             self.kill()
