@@ -73,16 +73,32 @@ while True:
             if len(pos_list) > 5:
                 del pos_list[0]
 
-    display_surface.fill("black")
-    if player.rect.centery >= 1180:
-        all_sprite.update(dt)
+    if player.life >= 0:
+        if player.rect.centery >= 1180:
+            all_sprite.update(dt)
 
-        all_sprite.custom_draw()
+            all_sprite.custom_draw()
 
-    if player.rect.centery < 1180:
+        if player.rect.centery < 1180:
+            display_surface.fill("blue")
+            font = pygame.font.Font('../graphics/subatomic.ttf', 20)
+            text_fail = font.render("Congratulations You Won Press P to play again or Q to quit the game!", True, (200, 200, 200))
+            text_fail_rect = text_fail.get_rect(center=((WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2)))
+            display_surface.blit(text_fail, text_fail_rect)
+            pygame.draw.rect(display_surface, "green", text_fail_rect.inflate(50, 30), width=7, border_radius=5)
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_p]:
+                player.pos = (2062, 3274)
+                player.life = 3
+            elif keys[pygame.K_q]:
+                pygame.quit()
+                sys.exit()
+
+    if player.life < 0:
         display_surface.fill("blue")
         font = pygame.font.Font('../graphics/subatomic.ttf', 20)
-        text_fail = font.render("Congratulations You Won Press P to play again or Q to quit the game!", True, (200, 200, 200))
+        text_fail = font.render("You lose Press P to play again or Q to quit the game", True, (200, 200, 200))
         text_fail_rect = text_fail.get_rect(center=((WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2)))
         display_surface.blit(text_fail, text_fail_rect)
         pygame.draw.rect(display_surface, "green", text_fail_rect.inflate(50, 30), width=7, border_radius=5)
@@ -90,6 +106,7 @@ while True:
 
         if keys[pygame.K_p]:
             player.pos = (2062, 3274)
+            player.life = 3
         elif keys[pygame.K_q]:
             pygame.quit()
             sys.exit()
