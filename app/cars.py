@@ -6,6 +6,7 @@ from random import choice
 class Car(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
+        self.name = 'car'
 
         for _, _, name in walk('../graphics/cars'):
             car_name = choice(name)
@@ -14,6 +15,7 @@ class Car(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center)
         self.direction = pygame.math.Vector2(1, 0)
         self.speed = 300
+        self.hitbox = self.rect.inflate(0, -self.rect.height / 2)
 
         if pos[0] < 200:
             self.direction = pygame.math.Vector2(1, 0)
@@ -23,6 +25,7 @@ class Car(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.pos += self.direction * self.speed * dt
-        self.rect.center = (round(self.pos.x), round(self.pos.y))
+        self.hitbox.center = (round(self.pos.x), round(self.pos.y))
+        self.rect.center = self.hitbox.center
         if not -300 < self.rect.x < 3400:
             self.kill()
