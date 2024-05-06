@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.collision_sprite = collision_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height / 2)
         self.life = 3
+        self.time = None
 
     def imports(self):
         self.animations = {}
@@ -80,8 +81,8 @@ class Player(pygame.sprite.Sprite):
             for sprite in self.collision_sprite.sprites():
                 if sprite.hitbox.colliderect(self.hitbox):
                     if hasattr(sprite, 'name') and sprite.name == 'car':
-                        self.rect = (2062, 3274)
                         self.life -= 1
+                        sprite.kill()
                     elif self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left
                         self.rect.centerx = self.hitbox.centerx
@@ -95,8 +96,8 @@ class Player(pygame.sprite.Sprite):
             for sprite in self.collision_sprite.sprites():
                 if sprite.hitbox.colliderect(self.hitbox):
                     if hasattr(sprite, 'name') and sprite.name == 'car':
-                        self.rect = (2062, 3274)
                         self.life -= 1
+                        sprite.kill()
                     elif self.direction.y > 0:
                         self.hitbox.bottom = sprite.hitbox.top
                         self.rect.centery = self.hitbox.centery
@@ -127,3 +128,8 @@ class Player(pygame.sprite.Sprite):
         self.move(dt)
         self.animate(dt)
         self.restrict()
+        if self.life < 0:
+            self.kill()
+        self.time = pygame.time.get_ticks() // 1000
+        if self.life < 0:
+            self.time = 0
