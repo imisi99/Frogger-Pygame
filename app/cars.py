@@ -16,12 +16,18 @@ class Car(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(1, 0)
         self.speed = 300
         self.hitbox = self.rect.inflate(0, -self.rect.height / 2)
+        self.initial_pos = pygame.math.Vector2(pos)
 
         if pos[0] < 200:
             self.direction = pygame.math.Vector2(1, 0)
         else:
             self.direction = pygame.math.Vector2(-1, 0)
             self.image = pygame.transform.flip(self.image, True, False)
+
+    def reset(self):
+        self.pos = self.initial_pos
+        self.rect.center = self.initial_pos
+        self.hitbox.center = self.initial_pos
 
     def update(self, dt):
         self.pos += self.direction * self.speed * dt

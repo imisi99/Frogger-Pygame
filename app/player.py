@@ -16,8 +16,9 @@ class Player(pygame.sprite.Sprite):
         self.speed = 200
         self.collision_sprite = collision_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height / 2)
-        self.life = 3
-        self.time = None
+        self.life = 1
+        self.time = pygame.time.get_ticks()
+        self.start_time = pygame.time.get_ticks()
 
     def imports(self):
         self.animations = {}
@@ -130,6 +131,4 @@ class Player(pygame.sprite.Sprite):
         self.restrict()
         if self.life < 0:
             self.kill()
-        self.time = pygame.time.get_ticks() // 1000
-        if self.life < 0:
-            self.time = 0
+        self.time = (pygame.time.get_ticks() - self.start_time) // 1000
